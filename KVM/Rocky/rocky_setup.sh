@@ -88,19 +88,22 @@ function install_selinux() {
 
 #SSH Setup
 function harden_ssh(){
-    sed -i 's/#Port\ 22/Port\ 8182/g' /etc/ssh/sshd_config
+    #sed -i 's/#Port\ 22/Port\ 8182/g' /etc/ssh/sshd_config
     sed -i 's/#Protocol\ 2/Protocol\ 2/g' /etc/ssh/sshd_config
     sed -i 's/#PermitRootLogin\ yes/PermitRootLogin\ no/g' /etc/ssh/sshd_config
     sed -i 's/#Banner\ none/Banner\ \/etc\/issue.net/g' /etc/ssh/sshd_config
 
     #Allow SELinux port 8182 for ssh
-    semanage port -a -t ssh_port_t -p tcp 8182
+    #semanage port -a -t ssh_port_t -p tcp 8182
+    semanage port -a -t ssh_port_t -p tcp 22
 }
 
 function firewalld_ssh() {
     echo '[*] Updating firewalld for ssh on 8182.'
-    firewall-cmd --add-port=8182/tcp
-    firewall-cmd --permanent --add-port=8182/tcp
+    firewall-cmd --add-port=22/tcp
+    firewall-cmd --permanent --add-port=22/tcp
+    #firewall-cmd --add-port=8182/tcp
+    #firewall-cmd --permanent --add-port=8182/tcp
     firewall-cmd --reload
 }
 
@@ -137,7 +140,7 @@ function self_signed_certificate() {
 
 function lets_encrypt_certificate() {
     # Test with a self signed cert or jump directly into a signed certificate
-    certbot certonly --webroot -w /usr/share/nginx/html/ -d $redirectorName -m devreap1@gmail.com --agree-tos -n
+    certbot certonly --webroot -w /opt/$redirectorName -d $redirectorName -m <myemailaddress> --agree-tos -n
     # If we our C2 stager needs PKCS12, use this command.
     # openssl pkcs12 -export -in fullchain.pem -inkey privkey.pem -out certificate.pfx -name $redirectorName -passout pass:CovenantDev
 }
@@ -246,13 +249,14 @@ function inform_powershell_empire_details() {
 [*] Create an http listener on Powershell Empire with following details:
         Host: "$redirectorName"
         Port: 443
-        DefaultProfile: /login/process/php|41.0.2228.0
+        DefaultProfile: /login/process.php|41.0.2228.0
+	UserAgent USEMODULE ONLY: 41.0.2228.0
         CertPath: /usr/share/powershell-empire/empire/server/data
 
 [*] Run the ssh command on your C2 server, connecting to all over your C2 redirectors:
         ssh <username>@<c2redirector host or IP> -p 22 -R 127.0.0.1:8080:127.0.0.1:443 -f -N
     
-[*] For your Stagers, be sure to set the following to ensure you hit nginx rules
+[*] For your Stagers or Modules, be sure to set the following to ensure you hit nginx rules. Never for your Listener
         UserAgent: 41.0.2228.0
 """
 }
@@ -275,6 +279,7 @@ firewalld_nginx
 update_selinux_port_forward
 self_signed_certificate
 ec2_redirector_config
+#lets_encrypt_certificate
 restart_nginx_service
 inform_powershell_empire_details
 
