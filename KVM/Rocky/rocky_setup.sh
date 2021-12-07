@@ -123,7 +123,8 @@ function firewalld_nginx() {
 }
 
 function update_selinux_port_forward() {
-    setsebool httpd_can_network_connect true
+    semanage boolean -m --on httpd_can_network_connect
+    #setsebool httpd_can_network_connect true
     getsebool httpd_can_network_connect
 }
 
@@ -242,6 +243,7 @@ EOF
 
 function restart_nginx_service() {
     systemctl restart nginx
+    systemctl enable nginx
 }
 
 function inform_powershell_empire_details() {
