@@ -171,11 +171,14 @@ server {
     if (\$http_user_agent ~ "41.0.2228.0") {
       set \$C2 A;
     }
-    if (\$http_user_agent ~ "42.0.2228.0") {
+    if (\$http_user_agent ~ "2.0.2228.0") {
       set \$C2 LT;
     }
-    if (\$http_user_agent ~ "43.0.2228.0") {
+    if (\$http_user_agent ~ "3.0.2228.0") {
       set \$C2 ST;
+    }
+    if (\$http_user_agent ~ "1.0.2228.0") {
+      set \$C2 IA;
     }
     # Use this section to set subnets, like 123.123.123.0/24, to only compromise these approved subnets.
     #if (\$remote_addr ~ "123.123.123") {
@@ -189,11 +192,14 @@ server {
     if (\$C2 = "AB") {
       proxy_pass https://127.0.0.1:8080;
     }
-    if (\$C2 = "ALTB") {
-      proxy_pass https://127.0.0.1:8081;
-    }
-    if (\$C2 = "ASTB") {
+    if (\$C2 = "LTB") {
       proxy_pass https://127.0.0.1:8082;
+    }
+    if (\$C2 = "STB") {
+      proxy_pass https://127.0.0.1:8083;
+    }
+    if (\$C2 = "IAB") {
+      proxy_pass https://127.0.0.1:8081;
     }
     try_files \$uri \$uri/ =404;
   }
@@ -203,11 +209,14 @@ server {
     if (\$http_user_agent ~ "41.0.2228.0") {
       set \$C2 A;
     }
-    if (\$http_user_agent ~ "42.0.2228.0") {
+    if (\$http_user_agent ~ "2.0.2228.0") {
       set \$C2 LT;
     }
-    if (\$http_user_agent ~ "43.0.2228.0") {
+    if (\$http_user_agent ~ "3.0.2228.0") {
       set \$C2 ST;
+    }
+    if (\$http_user_agent ~ "1.0.2228.0") {
+      set \$C2 IA;
     }
     # Use this section to set subnets, like 123.123.123.0/24, to only compromise these approved subnets.
     #if (\$remote_addr ~ "123.123.123") {
@@ -221,16 +230,17 @@ server {
     if (\$C2 = "AB") {
       proxy_pass https://127.0.0.1:8080;
     }
-    if (\$C2 = "ALTB") {
-      proxy_pass https://127.0.0.1:8081;
-    }
-    if (\$C2 = "ASTB") {
+    if (\$C2 = "LTB") {
       proxy_pass https://127.0.0.1:8082;
     }
-    try_files $uri $uri/ =404;
+    if (\$C2 = "STB") {
+      proxy_pass https://127.0.0.1:8083;
+    }
+    if (\$C2 = "IAB") {
+      proxy_pass https://127.0.0.1:8081;
+    }
+    try_files \$uri \$uri/ =404;
   }
-
-
   error_page 404 /404.html;
   location = /opt/html/40x.html {
   }
