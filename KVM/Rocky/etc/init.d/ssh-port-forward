@@ -1,0 +1,58 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides: ssh_port_forward
+# Required-Start:     $network $syslog $remote_fs
+# Required-Stop:      $network $syslog $remote_fs
+# Default-Start:      2 3 4 5
+# Default-Stop:       0 1 6
+# Short-Description:  c2 redirector host connections.
+# Description: 
+# This daemon file will initiate the ssh port forwarding
+# Variables
+# IP_ADDR_ONE, IP_ADDR_TWO, and IP_ADDR_THREE will be replaced on install
+### END INIT INFO
+
+export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
+
+C2REDIRECTOR=/usr/sbin/c2_redirectors
+IP_ADDR_ONE=
+IP_ADDR_TWO=
+IP_ADDR_THREE=
+C2_HAUL='interactive_ssh'
+
+# /usr/bin/test -x $C2REDIRECTOR || { echo "$C2REDIRECTOR not avaible";
+#       if [ "$1" = "stop" ]; then
+#             exit 0
+#       else
+#             exit 5
+#       fi 
+# }
+
+RETVAL=0
+
+case "$1" in
+      start)
+            /usr/bin/echo -n "Starting c2_redirectors daemon "
+            /usr/bin/sudo -u kali $C2REDIRECTOR $C2_HAUL $IP_ADDR_ONE $IP_ADDR_TWO $IP_ADDR_THREE
+            ;;
+      stop)
+            /usr/bin/echo -n "Killing SSH connections"
+            for i in $(/usr/bin/ps aux | /usr/bin/grep 'usr/bin/ssh -i /home/kali/.ssh/' | /usr/bin/grep -v 'grep --color' | awk '{print $2}'); do
+                  kill -9 $i     
+            done
+            ;;
+      restart)
+            /usr/bin/sudo -u kali $C2REDIRECTOR $C2_HAUL $IP_ADDR_ONE $IP_ADDR_TWO $IP_ADDR_THREE
+            ;;
+      status)
+            /usr/bin/echo -n "Checking for ssh processes to our c2 redirectors. If nothing, restart."
+            /usr/bin/ps aux | /usr/bin/grep 'ssh'
+            ;;
+      *)
+            /usr/bin/echo "Usage: $0 {start|stop|status|try-restart|restart}"
+            exit 1
+            ;;
+esac
+
+exit 0

@@ -1,0 +1,78 @@
+#!/bin/bash
+
+#
+# This file should be converted to ELF and located below, this is a daemon file.
+# Service: ssh-port-forward
+# File Location: /usr/sbin/c2_redirectors
+# Create the ELF file by running: shc -f c2_redirectors.sh
+#
+
+function _do_not_run_as_root() {
+    # Run as root
+    if [[ $(id -u) -eq 0 ]]; then
+        echo 'Do not run as root.'
+        exit
+    fi
+}
+
+function help_menu() {
+    # Help menu
+    echo "[*] Run as an interactive C2 Server."
+    echo "        c2_redirectors interactive_ssh 10.10.10.10 10.10.10.11 10.10.10.12"
+    echo ""
+    echo "[*] Run as a short_haul C2 Server."
+    echo "        c2_redirectors short_haul_ssh 10.10.10.10 10.10.10.11 10.10.10.12"
+    echo ""
+    echo "[*] Run as a long_haul C2 Server."
+    echo "        c2_redirectors long_haul_ssh 10.10.10.10 10.10.10.11 10.10.10.12"
+    echo ""
+}
+
+C2_TYPE=$1
+IPADDRESS_ONE=$2
+IPADDRESS_TWO=$3
+IPADDRESS_THREE=$4
+
+function interactive_ssh() {
+    #Interactive
+    /usr/bin/ssh -i /home/kali/.ssh/c2-redirectors rocky@$IPADDRESS_ONE -p 22 -R 127.0.0.1:8081:127.0.0.1:443 -f -N
+    /usr/bin/ssh -i /home/kali/.ssh/c2-redirectors rocky@$IPADDRESS_TWO -p 22 -R 127.0.0.1:8081:127.0.0.1:443 -f -N
+    /usr/bin/ssh -i /home/kali/.ssh/c2-redirectors rocky@$IPADDRESS_THREE -p 22 -R 127.0.0.1:8081:127.0.0.1:443 -f -N
+}
+
+function short_haul_ssh() {
+    #Short-Haul
+    /usr/bin/ssh -i /home/kali/.ssh/c2-redirectors rocky@$IPADDRESS_ONE -p 22 -R 127.0.0.1:8082:127.0.0.1:443 -f -N
+    /usr/bin/ssh -i /home/kali/.ssh/c2-redirectors rocky@$IPADDRESS_TWO -p 22 -R 127.0.0.1:8082:127.0.0.1:443 -f -N
+    /usr/bin/ssh -i /home/kali/.ssh/c2-redirectors rocky@$IPADDRESS_THREE -p 22 -R 127.0.0.1:8082:127.0.0.1:443 -f -N
+}
+
+function long_haul_ssh() {
+    #Long-Haul
+    /usr/bin/ssh -i /home/kali/.ssh/c2-redirectors rocky@$IPADDRESS_ONE -p 22 -R 127.0.0.1:8083:127.0.0.1:443 -f -N
+    /usr/bin/ssh -i /home/kali/.ssh/c2-redirectors rocky@$IPADDRESS_TWO -p 22 -R 127.0.0.1:8083:127.0.0.1:443 -f -N
+    /usr/bin/ssh -i /home/kali/.ssh/c2-redirectors rocky@$IPADDRESS_THREE -p 22 -R 127.0.0.1:8083:127.0.0.1:443 -f -N
+}
+
+case "$1" in
+    interactive_ssh)
+        _do_not_run_as_root
+        interactive_ssh
+        ;;
+    short_haul_ssh)
+        _do_not_run_as_root
+        short_haul_ssh
+        ;;
+    long_haul_ssh)
+        _do_not_run_as_root
+        long_haul_ssh
+        ;;
+    help)
+        help_menu
+        exit 1
+        ;;
+    *)
+        echo "Usage: c2_redirectors {interactive_ssh|short_haul_ssh|long_haul_ssh} <IP Address> <IP Address> <IP Address>"
+        exit 1
+        ;;
+esac

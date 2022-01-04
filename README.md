@@ -48,3 +48,20 @@ Do you own root domain and have an A record servicer.domain.com?
 ```
 
 You may now use this host as part of your c2 infrastructure. 
+
+
+
+
+# C2 Servers
+
+### Tested on Kali - system daemon on startup
+
+* These daemon files will allow your C2 to open a reverse tunnel to the C2 Redirectors
+* Place the files accordingly onto your Kali/C2 servers:
+
+```
+mv c2-redirectors/KVM/Rocky/etc/init.d/ssh-port-forward /etc/init.d/
+mv c2-redirectors/KVM/Rocky/usr/sbin/c2_redirectors /usr/sbin/
+systemctl enable ssh-port-forward
+```
+
