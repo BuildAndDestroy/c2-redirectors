@@ -2,7 +2,7 @@
 
 ### BEGIN INIT INFO
 # Provides: ssh_port_forward
-# Required-Start:     $network $syslog $remote_fs
+# Required-Start:     $network $syslog $sshd $remote_fs
 # Required-Stop:      $network $syslog $remote_fs
 # Default-Start:      2 3 4 5
 # Default-Stop:       0 1 6
@@ -21,15 +21,6 @@ IP_ADDR_TWO=
 IP_ADDR_THREE=
 C2_HAUL='interactive_ssh'
 
-# /usr/bin/test -x $C2REDIRECTOR || { echo "$C2REDIRECTOR not avaible";
-#       if [ "$1" = "stop" ]; then
-#             exit 0
-#       else
-#             exit 5
-#       fi 
-# }
-
-RETVAL=0
 
 case "$1" in
       start)

@@ -4,7 +4,7 @@
 # This file should be converted to ELF and located below, this is a daemon file.
 # Service: ssh-port-forward
 # File Location: /usr/sbin/c2_redirectors
-# Create the ELF file by running: shc -f c2_redirectors.sh
+# Create the ELF file by running: shc -f c2_redirectors
 #
 
 function _do_not_run_as_root() {
