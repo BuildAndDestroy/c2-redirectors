@@ -99,7 +99,7 @@ function harden_ssh(){
 }
 
 function firewalld_ssh() {
-    echo '[*] Updating firewalld for ssh on 8182.'
+    echo '[*] Updating firewalld for ssh on 22.'
     firewall-cmd --add-port=22/tcp
     firewall-cmd --permanent --add-port=22/tcp
     #firewall-cmd --add-port=8182/tcp
