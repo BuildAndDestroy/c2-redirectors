@@ -36,21 +36,21 @@ function domain_config_check() {
 
 #Create Admin User Secure File Structure SSH
 function config_ssh_keys() {
-    if [ ! -d /home/rockyuser/.ssh ]; then
-        mkdir /home/rockyuser/.ssh
-        touch /home/rockyuser/.ssh/authorized_keys
+    if [ ! -d /home/rocky/.ssh ]; then
+        mkdir /home/rocky/.ssh
+        touch /home/rocky/.ssh/authorized_keys
     fi
 
-    if [ ! -f /home/rockyuser/.ssh/authorized_keys ]; then
-        touch /home/rockyuser/.ssh/authorized_keys
+    if [ ! -f /home/rocky/.ssh/authorized_keys ]; then
+        touch /home/rocky/.ssh/authorized_keys
     fi
     echo "Please copy/paste your authorized key:"
     read -r -p ">>> " keyValue
-    echo "$keyValue" >> /home/rockyuser/.ssh/authorized_keys
+    echo "$keyValue" >> /home/rocky/.ssh/authorized_keys
 
-    chmod 700 /home/rockyuser/.ssh
-    chmod 600 /home/rockyuser/.ssh/authorized_keys
-    chown -R rockyuser:rockyuser /home/rockyuser
+    chmod 700 /home/rocky/.ssh
+    chmod 600 /home/rocky/.ssh/authorized_keys
+    chown -R rocky:rocky /home/rocky
 }
 
 function update_packages() {
