@@ -142,7 +142,7 @@ function self_signed_certificate() {
 function lets_encrypt_certificate() {
     # Test with a self signed cert or jump directly into a signed certificate
     certbot certonly --webroot -w /opt/$redirectorName -d $redirectorName -m <myemailaddress> --agree-tos -n
-    # If we our C2 stager needs PKCS12, use this command.
+    # If our C2 stager needs PKCS12, use this command.
     # openssl pkcs12 -export -in fullchain.pem -inkey privkey.pem -out certificate.pfx -name $redirectorName -passout pass:CovenantDev
 }
 
@@ -241,6 +241,12 @@ server {
     }
     try_files \$uri \$uri/ =404;
   }
+
+  location / {
+    # Set to google.com if the end user tries to visit the domain directly.
+    rewrite ^/(.*)$ https://www.google.com redirect;
+  }
+
   error_page 404 /404.html;
   location = /opt/html/40x.html {
   }

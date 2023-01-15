@@ -10,7 +10,7 @@
 # Description: 
 # This daemon file will initiate the ssh port forwarding
 # Variables
-# IP_ADDR_ONE, IP_ADDR_TWO, and IP_ADDR_THREE will be replaced on install
+# IP_ADDR_ONE and IP_ADDR_TWO will be replaced on install
 ### END INIT INFO
 
 export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
@@ -18,14 +18,13 @@ export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
 C2REDIRECTOR=/usr/sbin/c2_redirectors
 IP_ADDR_ONE=
 IP_ADDR_TWO=
-IP_ADDR_THREE=
 C2_HAUL='interactive_ssh'
 
 
 case "$1" in
       start)
             /usr/bin/echo -n "Starting c2_redirectors daemon "
-            /usr/bin/sudo -u kali $C2REDIRECTOR $C2_HAUL $IP_ADDR_ONE $IP_ADDR_TWO $IP_ADDR_THREE
+            /usr/bin/sudo -u kali $C2REDIRECTOR $C2_HAUL $IP_ADDR_ONE $IP_ADDR_TWO
             ;;
       stop)
             /usr/bin/echo -n "Killing SSH connections"
@@ -34,7 +33,7 @@ case "$1" in
             done
             ;;
       restart)
-            /usr/bin/sudo -u kali $C2REDIRECTOR $C2_HAUL $IP_ADDR_ONE $IP_ADDR_TWO $IP_ADDR_THREE
+            /usr/bin/sudo -u kali $C2REDIRECTOR $C2_HAUL $IP_ADDR_ONE $IP_ADDR_TWO
             ;;
       status)
             /usr/bin/echo -n "Checking for ssh processes to our c2 redirectors. If nothing, restart."
