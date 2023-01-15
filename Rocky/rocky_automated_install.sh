@@ -45,13 +45,13 @@ function _build_virt_command() {
     virt-install -n $hostname_variable \
     --memory $memory_size \
     --vcpus $allocate_cpu \
-    --location /mnt/iso/Rocky/Rocky-8.4-x86_64-minimal.iso \
+    --location http://dl.rockylinux.org/stg/rocky/9/BaseOS/x86_64/os \
     --os-variant linux \
     --network bridge=$net_interface \
     --disk /var/lib/libvirt/images/$hostname_variable.qcow2,size=$volume_size \
     --nographics \
     --initrd-inject=/var/lib/libvirt/kickstart/anaconda.cfg \
-    --extra-args "ks=file:/anaconda.cfg console=ttyS0"
+    --extra-args "inst.ks=file:/anaconda.cfg console=ttyS0"
 }
 
 

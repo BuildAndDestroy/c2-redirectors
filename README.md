@@ -17,10 +17,8 @@ Automate c2 redirector deployments.
 mkpasswd -m sha-512
 ```
 
-* You will need to download the Rocky Linux .iso file at this time, eventually we will move to http install.
-** https://rockylinux.org/download/
 * Move your anaconda.cfg file to /var/lib/libvirt/kickstart/
-* Move your rocky .iso file to /var/lib/libvirt/images/
+* no iso required, we are using http
 
 Kick off the automation script on your KVM host.
 ```
