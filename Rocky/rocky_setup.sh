@@ -268,7 +268,7 @@ function inform_powershell_empire_details() {
         Host: "$redirectorName"
         Port: 443
         DefaultProfile: /login/process.php|41.0.2228.0
-	UserAgent USEMODULE ONLY: 41.0.2228.0
+	UserAgent USESTAGER ONLY: 41.0.2228.0
         CertPath: /usr/share/powershell-empire/empire/server/data
 
 [*] Run the ssh command on your C2 server, connecting to all over your C2 redirectors:
