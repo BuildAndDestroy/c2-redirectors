@@ -151,7 +151,7 @@ function ec2_redirector_config() {
         mkdir /opt/$redirectorName
     fi
 
-cat << EOF > /etc/nginx/conf.d/c2-nginx-site.conf
+cat << EOF > /etc/nginx/conf.d/$redirectorName.conf
 server {
   listen 443 ssl http2 default_server;
   listen [::]:443 ssl http2 default_server;
